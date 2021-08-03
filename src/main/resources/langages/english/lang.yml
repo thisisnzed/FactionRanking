@@ -1,0 +1,50 @@
+# .__
+# |  |   _____    ____    _________     ____   ____
+# |  |   \__  \  /    \  / ___\__  \   / ___\_/ __ \
+# |  |___ / __ \|   |  \/ /_/  > __ \_/ /_/  >  ___/
+# |_____ (____  /___|  /\___  (____  /\___  / \___  >
+#        \/    \/     \//_____/     \//_____/      \/
+
+#Global
+command-prefix: "&e&lRanking &f&l» &f"
+
+#Errors
+command-no-permission: "&cYou can't execute this command!"
+command-no-sub: "&cThis sub-command doesn't exists !"
+command-error: "&cAn error occurred while executing the command"
+command-only-player: "&cOnly players can execute this command!"
+
+#Players
+leaderboard-updated:
+  - "&7&m------------------------------------------"
+  - "&fAll &bleaderboards &fhave been updated."
+  - "&bDisplay &frankings by taping &b/ranking&f."
+  - "&fNext update in &b&l%timer% &fminutes"
+  - "&7&m------------------------------------------"
+
+#Admin
+command-help:
+  - "&7&m------------------------------------------"
+  - "&b/ranking &7- &fDisplay best factions"
+  - "&b/ranking help &7- &fGet all commands of Ranking"
+  - "&b/ranking reload &7- &fReload plugin"
+  - "&b/ranking add <farm/pvp> <player> <value> &7- &fGive points to faction"
+  - "&b/ranking remove <farm/pvp> <player> <value> &7- &fRemove points to faction"
+  - "&7&m------------------------------------------"
+
+command-add-missing: "&c/ranking add <farm/pvp> <player> <value>"
+command-add-invalid-value: "&c%value% isn't a valid value"
+command-add-invalid-type: "&c%type% isn't a valid type of ranking"
+command-add-offline: "&c%player% isn't online"
+command-add-wilderness: "&c%player% isn't in a faction"
+command-add-success: "&b%value% &fpoints have been added to &b%faction% &fin &b%type% ranking"
+
+command-reload-unload: "&aRanking was unloaded !"
+command-reload-load: "&aRanking was loaded !"
+
+command-remove-missing: "&c/ranking remove <farm/pvp> <player> <value>"
+command-remove-invalid-value: "&c%value% isn't a valid value"
+command-remove-invalid-type: "&c%type% isn't a valid type of ranking"
+command-remove-offline: "&c%player% isn't online"
+command-remove-wilderness: "&c%player% isn't in a faction"
+command-remove-success: "&b%value% &fpoints have been removed to &b%faction% &fin &b%type% ranking"

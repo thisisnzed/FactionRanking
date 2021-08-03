@@ -1,0 +1,74 @@
+# _________                _____.__                            __  .__
+# \_   ___ \  ____   _____/ ____\__| ____  __ ______________ _/  |_|__| ____   ____
+# /    \  \/ /  _ \ /    \   __\|  |/ ___\|  |  \_  __ \__  \\   __\  |/  _ \ /    \
+# \     \___(  <_> )   |  \  |  |  / /_/  >  |  /|  | \// __ \|  | |  (  <_> )   |  \
+#  \______  /\____/|___|  /__|  |__\___  /|____/ |__|  (____  /__| |__|\____/|___|  /
+#         \/            \/        /_____/                   \/                    \/
+
+#SQL Database
+host: "127.0.0.1"
+port: 3306
+database: "factionranking"
+user: "mysql"
+password: "password123"
+
+#Commands
+permission: "factionranking.admin"
+
+#Leaderboard updater (in minute)
+timeUpdater: 10
+
+#GUI - Shared (FARM/PVP/GLOBAL)
+topName: "&b&l%faction% &7&o(#%position%)"
+topLore:
+  - "&fPoints &l» &b&l%points%"
+
+skullName: "&b&l%player%"
+skullLore:
+  - "&fMoney &l» &b%money%$"
+  - "&fYour faction &l» &b%faction%"
+  - "&fYour points &l» &b%points% point(s)"
+  - "&fRank &l» &b#%position%"
+
+bestFactionsName: "&b&lTOP 10"
+bestFactionsLoreByLine: "&b&l#%position% &7- &f%faction% &7&o(%points% points)"
+
+#GUI - Ranking (FARM)
+farmingTitle: "&b&lRanking &7- &fFarming"
+
+#GUI - Ranking (PVP)
+pvpTitle: "&b&lRanking &7- &fEvents"
+
+#GUI - Ranking (GLOBAL)
+globalTitle: "&b&lRanking &7- &fGlobal"
+
+#GUI - Main
+mainTitle: "&b&lRanking &7- &fChoose"
+mainItemPvp: "&b&lRanking &7&o(PvP)"
+mainItemFarm: "&b&lRanking &7&o(Farm)"
+mainItemGlobal: "&b&lRanking &7&o(Global)"
+
+mainItemPvpLore:
+  - "&fThe &bpvp &franking is based on which"
+  - "&bfactions &fhave the most &bpoints"
+  - "&fin &bpvp events&f."
+  - " "
+  - "&fEach event &bwon &fwith your &bfaction"
+  - "&fwill give you &bpoints &fto increase your"
+  - "&brank &fin the &bleaderboard&f."
+
+mainItemGlobalLore:
+  - "&fThe &bpvp &franking is based on which"
+  - "&bfactions &fhave the most &bpoints &fin"
+  - "&fthe &b2 &frankings."
+  - " "
+  - "&fIn fact, this &bglobal &franking"
+  - "&fadds &bthe two &frankings and then"
+  - "&fdisplays the best &bserver factions &f!"
+
+mainItemFarmLore:
+  - "&fThe &bfarm &franking is based on which"
+  - "&bfactions &fhave bought the most &bpoints&f."
+  - " "
+  - "&fBuy &bpoints &ffor you faction"
+  - "&fby typing &b/shop&f."
