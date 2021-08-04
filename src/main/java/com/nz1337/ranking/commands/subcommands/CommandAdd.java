@@ -46,14 +46,10 @@ public class CommandAdd extends SubCommandManager {
         }
         String faction = fPlayer.getFaction().getTag();
         int amount = Integer.parseInt(uncheckedAmount);
-        if (type.equalsIgnoreCase("farm")) {
-            ranking.getDatabaseManager().getSqlHandler().setTable("farm").addPoints(faction, amount);
-            sender.sendMessage(prefix + Lang.COMMAND_ADD_SUCCESS.get().replace("%faction%", faction).replace("%type%", "FARM").replace("%value%", String.valueOf(amount)));
-            return;
-        }
-        if (type.equalsIgnoreCase("pvp")) {
-            ranking.getDatabaseManager().getSqlHandler().setTable("pvp").addPoints(faction, amount);
-            sender.sendMessage(prefix + Lang.COMMAND_ADD_SUCCESS.get().replace("%faction%", faction).replace("%type%", "PVP").replace("%value%", String.valueOf(amount)));
+        if (type.equalsIgnoreCase("farm") || type.equalsIgnoreCase("pvp")) {
+            String typeLower = type.toLowerCase();
+            ranking.getDatabaseManager().getSqlHandler().setTable(typeLower).addPoints(faction, amount);
+            sender.sendMessage(prefix + Lang.COMMAND_ADD_SUCCESS.get().replace("%faction%", faction).replace("%type%", typeLower).replace("%value%", String.valueOf(amount)));
         }
     }
 

@@ -46,14 +46,10 @@ public class CommandRemove extends SubCommandManager {
         }
         String faction = fPlayer.getFaction().getTag();
         int amount = Integer.parseInt(uncheckedAmount);
-        if (type.equalsIgnoreCase("farm")) {
-            ranking.getDatabaseManager().getSqlHandler().setTable("farm").removePoints(faction, amount);
-            sender.sendMessage(prefix + Lang.COMMAND_REMOVE_SUCCESS.get().replace("%faction%", faction).replace("%type%", "FARM").replace("%value%", String.valueOf(amount)));
-            return;
-        }
-        if (type.equalsIgnoreCase("pvp")) {
-            ranking.getDatabaseManager().getSqlHandler().setTable("pvp").removePoints(faction, amount);
-            sender.sendMessage(prefix + Lang.COMMAND_REMOVE_SUCCESS.get().replace("%faction%", faction).replace("%type%", "PVP").replace("%value%", String.valueOf(amount)));
+        if (type.equalsIgnoreCase("farm") || type.equalsIgnoreCase("pvp")) {
+            String typeLower = type.toLowerCase();
+            ranking.getDatabaseManager().getSqlHandler().setTable(typeLower).removePoints(faction, amount);
+            sender.sendMessage(prefix + Lang.COMMAND_REMOVE_SUCCESS.get().replace("%faction%", faction).replace("%type%", typeLower).replace("%value%", String.valueOf(amount)));
         }
     }
 
