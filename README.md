@@ -2,6 +2,22 @@
 
 FactionRanking is a plugin that allows server administrators to put factions in competition in different rankings (working for **1.7** and **highter**)
 
+## Developers
+
+You can reuse FactionRanking but make sure you comply with the [LICENSE](https://github.com/thisisnzed/FactionRanking/blob/main/LICENSE).
+
+### Maven
+
+```xml
+<dependencies>
+    <dependency>
+        <groupId>com.factionranking</groupId>
+        <artifactId>FactionRanking</artifactId>
+        <version>1.0</version>
+    </dependency>
+</dependencies>
+```
+
 ## Dependencies
 
 * **FactionsUUID** : https://www.spigotmc.org/resources/factionsuuid.1035/
@@ -35,19 +51,3 @@ There are **three** rankings and for each there is **one** placeholder to displa
 * **Ranking - Global** : %factionranking_globalrank%
 * **Ranking - Farm** : %factionranking_farmrank%
 * **Ranking - PvP** : %factionranking_pvprank%
-
-## Developers
-
-You can reuse FactionRanking but make sure you comply with the [LICENSE](https://github.com/thisisnzed/FactionRanking/blob/main/LICENSE).
-
-### Maven
-
-```xml
-<dependencies>
-    <dependency>
-        <groupId>com.factionranking</groupId>
-        <artifactId>FactionRanking</artifactId>
-        <version>1.0</version>
-    </dependency>
-</dependencies>
-```
