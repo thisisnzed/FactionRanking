@@ -27,7 +27,7 @@ You can reuse FactionRanking but make sure you comply with the [LICENSE](https:/
 ## Features
 
 * **MySQL Support** | Database & tables **auto-creation**
-* Placeholders to **display** the position** in the **ranking of **player factions** (in the **chat** for example)
+* Placeholders to **display** the **position** in the **ranking** of **player factions** (in the **chat** for example)
 * Fully **[configurable](https://github.com/thisisnzed/FactionRanking/blob/main/src/main/resources/config.yml)**
 * Fully **[translatable](https://github.com/thisisnzed/FactionRanking/blob/main/src/main/resources/lang.yml)**
 * Plugin is started **asynchronously** to get best performances
