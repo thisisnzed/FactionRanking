@@ -32,7 +32,7 @@ You can reuse FactionRanking but make sure you comply with the [LICENSE](https:/
 * Fully **[translatable](https://github.com/thisisnzed/FactionRanking/blob/main/src/main/resources/lang.yml)**
 * Plugin is started **asynchronously** to get best performances
 * Support all versions **from 1.7**
-* **Auto-update** leadboards every X minutes
+* **Auto-update** leaderboards every X minutes
 * **One GUI** for each ranking (customizable)
 * **Console** can **execute commands** to add and remove points from Faction for your **events like KOTH/Totem/DTC...**
 
