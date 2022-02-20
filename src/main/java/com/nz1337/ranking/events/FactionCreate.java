@@ -10,12 +10,12 @@ public class FactionCreate implements Listener {
 
     private final DatabaseManager databaseManager;
 
-    public FactionCreate(Ranking ranking) {
+    public FactionCreate(final Ranking ranking) {
         this.databaseManager = ranking.getDatabaseManager();
     }
 
     @EventHandler
-    public void onFactionCreate(FactionCreateEvent event) {
-        for (String table : new String[]{"pvp", "farm", "global"}) this.databaseManager.getSqlHandler().setTable(table).register(event.getFaction().getTag());
+    public void onFactionCreate(final FactionCreateEvent event) {
+        for (final String table : new String[]{"pvp", "farm", "global"}) this.databaseManager.getSqlHandler().setTable(table).register(event.getFaction().getTag());
     }
 }

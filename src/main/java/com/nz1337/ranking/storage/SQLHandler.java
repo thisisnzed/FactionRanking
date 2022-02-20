@@ -13,189 +13,189 @@ public class SQLHandler {
     private final Ranking ranking;
     private String table;
 
-    public SQLHandler(Ranking ranking) {
+    public SQLHandler(final Ranking ranking) {
         this.ranking = ranking;
     }
 
-    public SQLHandler setTable(String table) {
+    public SQLHandler setTable(final String table) {
         this.table = !table.contains("ranking_") ? "ranking_" + table : table;
         return this;
     }
 
-    public boolean isExists(String tag) {
-        Connection connection = ranking.getConnection();
+    public boolean isExists(final String tag) {
+        final Connection connection = this.ranking.getConnection();
         try {
-            PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM `" + this.table + "` WHERE `name`=?");
+            final PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM `" + this.table + "` WHERE `name`=?");
             preparedStatement.setString(1, tag);
             if (preparedStatement.executeQuery().next()) return true;
-        } catch (SQLException e) {
-            e.printStackTrace();
+        } catch (final SQLException exception) {
+            exception.printStackTrace();
         }
         return false;
     }
 
-    public void register(String tag) {
-        Connection connection = ranking.getConnection();
+    public void register(final String tag) {
+        final Connection connection = this.ranking.getConnection();
         try {
-            PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM `" + this.table + "` WHERE `name`=?");
+            final PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM `" + this.table + "` WHERE `name`=?");
             preparedStatement.setString(1, tag);
             preparedStatement.executeQuery().next();
-            if (!isExists(tag)) {
-                PreparedStatement insert = connection.prepareStatement("INSERT INTO `" + this.table + "` (`name`,`points`,`rank`) VALUE (?,?,?)");
+            if (!this.isExists(tag)) {
+                final PreparedStatement insert = connection.prepareStatement("INSERT INTO `" + this.table + "` (`name`,`points`,`rank`) VALUE (?,?,?)");
                 insert.setString(1, tag);
                 insert.setInt(2, 0);
                 insert.setInt(3, -1);
                 insert.executeUpdate();
-                System.out.println("[Ranking] (" + table + ") A new faction has been registered. Tag: " + tag);
+                System.out.println("[Ranking] (" + this.table + ") A new faction has been registered. Tag: " + tag);
             }
-        } catch (SQLException e) {
-            e.printStackTrace();
+        } catch (final SQLException exception) {
+            exception.printStackTrace();
         }
     }
 
-    public void setName(String oldName, String factionName) {
-        if (!isExists(oldName)) return;
-        Connection connection = ranking.getConnection();
+    public void setName(final String oldName, final String factionName) {
+        if (!this.isExists(oldName)) return;
+        final Connection connection = this.ranking.getConnection();
         try {
-            PreparedStatement preparedStatement = connection.prepareStatement("UPDATE `" + this.table + "` SET `name`=? WHERE `name`=?");
+            final PreparedStatement preparedStatement = connection.prepareStatement("UPDATE `" + this.table + "` SET `name`=? WHERE `name`=?");
             preparedStatement.setString(1, factionName);
             preparedStatement.setString(2, oldName);
             preparedStatement.executeUpdate();
-            if (isExists(oldName)) delete(oldName);
-        } catch (SQLException e) {
-            e.printStackTrace();
+            if (this.isExists(oldName)) this.delete(oldName);
+        } catch (final SQLException exception) {
+            exception.printStackTrace();
         }
     }
 
-    public String getName(String tag) {
-        register(tag);
-        Connection connection = ranking.getConnection();
+    public String getName(final String tag) {
+        this.register(tag);
+        final Connection connection = this.ranking.getConnection();
         try {
-            PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM `" + this.table + "` WHERE `name`=?");
+            final PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM `" + this.table + "` WHERE `name`=?");
             preparedStatement.setString(1, tag);
-            ResultSet results = preparedStatement.executeQuery();
+            final ResultSet results = preparedStatement.executeQuery();
             results.next();
             return results.getString("name");
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
+        } catch (final SQLException exception) {
+            exception.printStackTrace();
         }
         return "Aucune";
     }
 
-    public void addPoints(String tag, int amount) {
-        register(tag);
-        Connection connection = ranking.getConnection();
+    public void addPoints(final String tag, final int amount) {
+        this.register(tag);
+        final Connection connection = this.ranking.getConnection();
         try {
-            PreparedStatement preparedStatement = connection.prepareStatement("UPDATE `" + this.table + "` SET `points`=? WHERE `name`=?");
-            preparedStatement.setInt(1, getPoints(tag) + amount);
+            final PreparedStatement preparedStatement = connection.prepareStatement("UPDATE `" + this.table + "` SET `points`=? WHERE `name`=?");
+            preparedStatement.setInt(1, this.getPoints(tag) + amount);
             preparedStatement.setString(2, tag);
             preparedStatement.executeUpdate();
-        } catch (SQLException e) {
-            e.printStackTrace();
+        } catch (final SQLException exception) {
+            exception.printStackTrace();
         }
     }
 
-    public void removePoints(String tag, int amount) {
-        register(tag);
-        Connection connection = ranking.getConnection();
+    public void removePoints(final String tag, final int amount) {
+        this.register(tag);
+        final Connection connection = this.ranking.getConnection();
         try {
-            PreparedStatement preparedStatement = connection.prepareStatement("UPDATE `" + this.table + "` SET `points`=? WHERE `name`=?");
-            preparedStatement.setInt(1, getPoints(tag) - amount);
+            final PreparedStatement preparedStatement = connection.prepareStatement("UPDATE `" + this.table + "` SET `points`=? WHERE `name`=?");
+            preparedStatement.setInt(1, this.getPoints(tag) - amount);
             preparedStatement.setString(2, tag);
             preparedStatement.executeUpdate();
-        } catch (SQLException e) {
-            e.printStackTrace();
+        } catch (final SQLException exception) {
+            exception.printStackTrace();
         }
     }
 
-    public int getPoints(String tag) {
-        Connection connection = ranking.getConnection();
+    public int getPoints(final String tag) {
+        final Connection connection = this.ranking.getConnection();
         try {
-            PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM `" + this.table + "` WHERE `name`=?");
+            final PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM `" + this.table + "` WHERE `name`=?");
             preparedStatement.setString(1, tag);
-            ResultSet results = preparedStatement.executeQuery();
+            final ResultSet results = preparedStatement.executeQuery();
             if (results.next()) return results.getInt("points");
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
+        } catch (final SQLException exception) {
+            exception.printStackTrace();
         }
         return 0;
     }
 
-    public void setPoints(String tag, int amount) {
-        register(tag);
-        Connection connection = ranking.getConnection();
+    public void setPoints(final String tag, final int amount) {
+        this.register(tag);
+        final Connection connection = this.ranking.getConnection();
         try {
-            PreparedStatement preparedStatement = connection.prepareStatement("UPDATE `" + this.table + "` SET `points`=? WHERE `name`=?");
+            final PreparedStatement preparedStatement = connection.prepareStatement("UPDATE `" + this.table + "` SET `points`=? WHERE `name`=?");
             preparedStatement.setInt(1, amount);
             preparedStatement.setString(2, tag);
             preparedStatement.executeUpdate();
-        } catch (SQLException e) {
-            e.printStackTrace();
+        } catch (final SQLException exception) {
+            exception.printStackTrace();
         }
     }
 
-    public void setRank(String tag, int rank) {
-        register(tag);
-        Connection connection = ranking.getConnection();
+    public void setRank(final String tag, final int rank) {
+        this.register(tag);
+        final Connection connection = this.ranking.getConnection();
         try {
-            PreparedStatement preparedStatement = connection.prepareStatement("UPDATE `" + this.table + "` SET `rank`=? WHERE `name`=?");
+            final PreparedStatement preparedStatement = connection.prepareStatement("UPDATE `" + this.table + "` SET `rank`=? WHERE `name`=?");
             preparedStatement.setInt(1, rank);
             preparedStatement.setString(2, tag);
             preparedStatement.executeUpdate();
-        } catch (SQLException e) {
-            e.printStackTrace();
+        } catch (final SQLException exception) {
+            exception.printStackTrace();
         }
     }
 
-    public int getRank(String tag) {
-        register(tag);
-        Connection connection = ranking.getConnection();
+    public int getRank(final String tag) {
+        this.register(tag);
+        final Connection connection = this.ranking.getConnection();
         try {
-            PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM `" + this.table + "` WHERE `name`=?");
+            final PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM `" + this.table + "` WHERE `name`=?");
             preparedStatement.setString(1, tag);
-            ResultSet results = preparedStatement.executeQuery();
+            final ResultSet results = preparedStatement.executeQuery();
             results.next();
             return results.getInt("rank");
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
+        } catch (final SQLException exception) {
+            exception.printStackTrace();
         }
         return -1;
     }
 
     public void delete(String tag) {
-        if (!isExists(tag)) return;
-        Connection connection = ranking.getConnection();
+        if (!this.isExists(tag)) return;
+        final Connection connection = this.ranking.getConnection();
         try {
-            PreparedStatement preparedStatement = connection.prepareStatement("DELETE FROM `" + this.table + "` WHERE `" + this.table + "`.`name`=?");
+            final PreparedStatement preparedStatement = connection.prepareStatement("DELETE FROM `" + this.table + "` WHERE `" + this.table + "`.`name`=?");
             preparedStatement.setString(1, tag);
             preparedStatement.executeUpdate();
-        } catch (SQLException e) {
-            e.printStackTrace();
+        } catch (final SQLException exception) {
+            exception.printStackTrace();
         }
     }
 
-    public String getFactionAt(int rank) {
-        Connection connection = ranking.getConnection();
+    public String getFactionAt(final int rank) {
+        final Connection connection = this.ranking.getConnection();
         try {
-            PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM `" + this.table + "` WHERE `rank`=?");
+            final PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM `" + this.table + "` WHERE `rank`=?");
             preparedStatement.setInt(1, rank);
-            ResultSet results = preparedStatement.executeQuery();
+            final ResultSet results = preparedStatement.executeQuery();
             if (results.next()) return results.getString("name");
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
+        } catch (final SQLException exception) {
+            exception.printStackTrace();
         }
         return "Aucune";
     }
 
     public ArrayList<String> getAllFactions() {
-        Connection connection = ranking.getConnection();
-        ArrayList<String> factions = new ArrayList<>();
+        final Connection connection = this.ranking.getConnection();
+        final ArrayList<String> factions = new ArrayList<>();
         try {
-            PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM `" + this.table + "`");
-            ResultSet results = preparedStatement.executeQuery();
+            final PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM `" + this.table + "`");
+            final ResultSet results = preparedStatement.executeQuery();
             while (results.next()) factions.add(results.getString("name"));
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
+        } catch (final SQLException exception) {
+            exception.printStackTrace();
         }
         return factions;
     }

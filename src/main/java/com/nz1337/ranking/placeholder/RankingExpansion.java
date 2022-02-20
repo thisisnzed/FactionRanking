@@ -42,7 +42,7 @@ public class RankingExpansion extends PlaceholderExpansion {
         final FPlayer fPlayer = FPlayers.getInstance().getByPlayer(player);
         if (player == null || fPlayer == null || !fPlayer.hasFaction()) return "?";
         final String tag = fPlayer.getFaction().getTag();
-        final DatabaseManager databaseManager = ranking.getDatabaseManager();
+        final DatabaseManager databaseManager = this.ranking.getDatabaseManager();
         final SQLHandler sqlHandler = databaseManager.getSqlHandler();
         switch (identifier) {
             case "globalrank":

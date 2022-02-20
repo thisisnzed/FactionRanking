@@ -12,14 +12,14 @@ public class FarmGUI {
     private final Ranking ranking;
     private final Settings settings;
 
-    public FarmGUI(Ranking ranking) {
+    public FarmGUI(final Ranking ranking) {
         this.ranking = ranking;
         this.settings = ranking.getSettings();
     }
 
-    public void open(Player player) {
-        Inventory inventory = GUIUtils.createInventory(54, this.settings.getFarmingTitle());
-        SQLHandler sqlHandler = this.ranking.getDatabaseManager().getSqlHandler();
+    public void open(final Player player) {
+        final Inventory inventory = GUIUtils.createInventory(54, this.settings.getFarmingTitle());
+        final SQLHandler sqlHandler = this.ranking.getDatabaseManager().getSqlHandler();
         GUIUtils.setSeparators(inventory, true);
         inventory.setItem(4, GUIUtils.getHead(player, sqlHandler));
         inventory.setItem(21, GUIUtils.getFaction(1, sqlHandler, "farm"));

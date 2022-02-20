@@ -1,6 +1,7 @@
 package com.nz1337.ranking.manager;
 
 import com.nz1337.ranking.launcher.Launcher;
+import lombok.Getter;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 
@@ -11,26 +12,26 @@ public enum FileManager {
 
     CONFIG("config.yml"), LANG("lang.yml");
 
-    private final Launcher instance = Launcher.getPlugin(Launcher.class); //pas sûr de celle là dcp
-    private final String fileName;
+    private final Launcher instance = Launcher.getPlugin(Launcher.class);
+    @Getter private final String fileName;
     private final File dataFolder;
 
-    FileManager(String fileName) {
+    FileManager(final String fileName) {
         this.fileName = fileName;
-        this.dataFolder = instance.getDataFolder();
+        this.dataFolder = this.instance.getDataFolder();
     }
 
     public File getFile() {
-        return new File(dataFolder, fileName);
+        return new File(this.dataFolder, this.fileName);
     }
 
-    public void create(Logger logger) {
-        if (fileName == null || fileName.isEmpty()) {
+    public void create(final Logger logger) {
+        if (this.fileName == null || this.fileName.isEmpty()) {
             throw new IllegalArgumentException("ResourcesPath cannot be null or empty");
         }
-        InputStream in = instance.getResource(fileName);
+        InputStream in = instance.getResource(this.fileName);
         if (in == null) {
-            throw new IllegalArgumentException("The resource " + fileName + " cannot be found in jar");
+            throw new IllegalArgumentException("The resource " + this.fileName + " cannot be found in jar");
         }
         if (!dataFolder.exists() && !dataFolder.mkdir()) {
             logger.severe("Failed to make directory");
@@ -38,7 +39,7 @@ public enum FileManager {
         File outFile = getFile();
         try {
             if (!outFile.exists()) {
-                logger.info("The " + fileName + " wasn't found, creation in progress");
+                logger.info("The " + this.fileName + " wasn't found, creation in progress");
                 OutputStream out = new FileOutputStream(outFile);
                 byte[] buffer = new byte[1024];
                 int n;
@@ -67,9 +68,5 @@ public enum FileManager {
         } catch (IOException e) {
             e.printStackTrace();
         }
-    }
-
-    public String getFileName() {
-        return fileName;
     }
 }

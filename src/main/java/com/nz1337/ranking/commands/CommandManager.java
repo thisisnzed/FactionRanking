@@ -17,7 +17,7 @@ public class CommandManager implements CommandExecutor {
     private final ArrayList<SubCommandManager> commands = new ArrayList<>();
     private final Ranking ranking;
 
-    public CommandManager(Ranking ranking) {
+    public CommandManager(final Ranking ranking) {
         this.ranking = ranking;
     }
 
@@ -29,17 +29,17 @@ public class CommandManager implements CommandExecutor {
         this.commands.add(new CommandReload());
     }
 
-    public boolean onCommand(CommandSender sender, Command command, String s, String[] args) {
+    public boolean onCommand(final CommandSender sender, final Command command, final String s, final String[] args) {
         if (command.getName().equalsIgnoreCase("classement")) {
             if (args.length == 0) {
                 if (!(sender instanceof Player)) {
                     sender.sendMessage(ChatColor.RED + Lang.COMMAND_ONLY_PLAYER.get());
                     return true;
                 }
-                ranking.getGuiManager().getMainGUI().open(((Player) sender).getPlayer());
+                this.ranking.getGuiManager().getMainGUI().open(((Player) sender).getPlayer());
                 return true;
             }
-            SubCommandManager target = this.get(args[0]);
+            final SubCommandManager target = this.get(args[0]);
             if (target == null) {
                 sender.sendMessage(Lang.COMMAND_NO_SUB.get());
                 return true;
@@ -47,7 +47,7 @@ public class CommandManager implements CommandExecutor {
             new ArrayList<>(Arrays.asList(args)).remove(0);
             try {
                 target.execute(this.ranking, sender, args);
-            } catch (Exception e) {
+            } catch (final Exception e) {
                 sender.sendMessage(Lang.COMMAND_ERROR.get());
                 e.printStackTrace();
             }
@@ -55,8 +55,8 @@ public class CommandManager implements CommandExecutor {
         return true;
     }
 
-    private SubCommandManager get(String name) {
-        for (SubCommandManager sc : this.commands) {
+    private SubCommandManager get(final String name) {
+        for (final SubCommandManager sc : this.commands) {
             if (sc.name().equalsIgnoreCase(name)) return sc;
             String[] aliases;
             for (int var5 = 0; var5 < (aliases = sc.aliases()).length; ++var5)

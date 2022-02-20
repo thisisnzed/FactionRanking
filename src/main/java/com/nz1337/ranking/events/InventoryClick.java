@@ -16,29 +16,29 @@ public class InventoryClick implements Listener {
     private final Ranking ranking;
     private final Settings settings;
 
-    public InventoryClick(Ranking ranking) {
+    public InventoryClick(final Ranking ranking) {
         this.ranking = ranking;
         this.settings = ranking.getSettings();
     }
 
     @EventHandler
-    public void onHotbarSwap(InventoryClickEvent event) {
-        Inventory inv = event.getInventory();
+    public void onHotbarSwap(final InventoryClickEvent event) {
+        final Inventory inv = event.getInventory();
         if (inv == null || inv.getName() == null) return;
-        String inventoryName = inv.getName();
+        final String inventoryName = inv.getName();
         if ((inventoryName.equals(this.colorize(this.settings.getMainTitle())) || inventoryName.equals(this.colorize(this.settings.getGlobalTitle())) || inventoryName.equals(this.colorize(this.settings.getFarmingTitle())) || inventoryName.equals(this.colorize(this.settings.getPvpTitle()))) && event.getAction() == InventoryAction.HOTBAR_SWAP)
             event.setCancelled(true);
     }
 
     @EventHandler
-    public void onInventoryClick(InventoryClickEvent event) {
-        Player player = (Player) event.getWhoClicked();
-        ItemStack currentItem = event.getCurrentItem();
-        Inventory inv = event.getInventory();
+    public void onInventoryClick(final InventoryClickEvent event) {
+        final Player player = (Player) event.getWhoClicked();
+        final ItemStack currentItem = event.getCurrentItem();
+        final Inventory inv = event.getInventory();
         if (currentItem == null || inv == null || inv.getName() == null || currentItem.getItemMeta() == null) return;
-        String currentItemName = currentItem.getItemMeta().getDisplayName();
+        final String currentItemName = currentItem.getItemMeta().getDisplayName();
         if (currentItemName == null) return;
-        String invName = inv.getName();
+        final String invName = inv.getName();
         if (invName.equals(this.colorize(this.settings.getMainTitle()))) {
             event.setCancelled(true);
             if (currentItemName.equals(this.colorize(this.settings.getMainItemFarm()))) this.ranking.getGuiManager().getFarmGUI().open(player);
@@ -48,7 +48,7 @@ public class InventoryClick implements Listener {
             event.setCancelled(true);
     }
 
-    private String colorize(String s) {
+    private String colorize(final String s) {
         return "§7" + ChatColor.translateAlternateColorCodes('&', s);
     }
 }

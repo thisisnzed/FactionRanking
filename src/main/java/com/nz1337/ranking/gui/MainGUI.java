@@ -20,7 +20,7 @@ public class MainGUI {
     private final ArrayList<String> farmLore;
     private final ArrayList<String> globalLore;
 
-    public MainGUI(Ranking ranking) {
+    public MainGUI(final Ranking ranking) {
         this.ranking = ranking;
         this.settings = ranking.getSettings();
         this.pvpLore = new ArrayList<>();
@@ -31,9 +31,9 @@ public class MainGUI {
         this.settings.getMainItemGlobalLore().forEach(e -> this.globalLore.add(ChatColor.translateAlternateColorCodes('&', e)));
     }
 
-    public void open(Player player) {
-        Inventory inventory = GUIUtils.createInventory(45, this.settings.getMainTitle());
-        SQLHandler sqlHandler = this.ranking.getDatabaseManager().getSqlHandler();
+    public void open(final Player player) {
+        final Inventory inventory = GUIUtils.createInventory(45, this.settings.getMainTitle());
+        final SQLHandler sqlHandler = this.ranking.getDatabaseManager().getSqlHandler();
         GUIUtils.setSeparators(inventory, false);
         inventory.setItem(4, GUIUtils.getHead(player, sqlHandler));
         inventory.setItem(20, new ItemBuilder(Material.IRON_SWORD).setDisplayName("§7" + ChatColor.translateAlternateColorCodes('&', this.settings.getMainItemPvp())).setLore(this.pvpLore).build());

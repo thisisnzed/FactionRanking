@@ -6,6 +6,8 @@ import com.nz1337.ranking.launcher.Launch;
 import com.nz1337.ranking.launcher.Launcher;
 import com.nz1337.ranking.manager.*;
 import com.nz1337.ranking.utils.GUIUtils;
+import lombok.Getter;
+import lombok.Setter;
 import org.bukkit.Bukkit;
 import org.yaml.snakeyaml.Yaml;
 import org.yaml.snakeyaml.constructor.CustomClassLoaderConstructor;
@@ -19,19 +21,30 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.util.Arrays;
 import java.util.logging.Logger;
+import java.util.stream.Stream;
 
 public class Ranking implements Launch {
 
+    @Getter
     private Launcher launcher;
     private CommandManager commandManager;
     private ListenerManager listenerManager;
+    @Getter
     private DatabaseManager databaseManager;
+    @Getter
     private TaskManager taskManager;
+    @Getter
     private GuiManager guiManager;
+    @Getter
     private PlaceholderManager placeholderManager;
+    @Getter
     private Settings settings;
-    private String port, host, database, username, password;
+    @Getter
+    private String database, username, password;
+    @Getter
+    @Setter
     private Connection connection;
 
     @Override
@@ -47,78 +60,52 @@ public class Ranking implements Launch {
             this.guiManager = new GuiManager(this);
             this.taskManager = new TaskManager(this);
             this.sqlInitializer();
-            this.getTaskManager().getRankUpdater().runTaskTimerAsynchronously(getLauncher(), 60L, (getSettings().getTimeUpdater() * 1200L));
-            if (Bukkit.getPluginManager().getPlugin("PlaceholderAPI") != null) this.placeholderManager = new PlaceholderManager(this);
-            GUIUtils.setSettings(settings);
+            this.getTaskManager().getRankUpdater().runTaskTimerAsynchronously(this.getLauncher(), 60L, (this.getSettings().getTimeUpdater() * 1200L));
+            if (Bukkit.getPluginManager().getPlugin("PlaceholderAPI") != null)
+                this.placeholderManager = new PlaceholderManager(this);
+            GUIUtils.setSettings(this.settings);
         });
     }
 
     @Override
     public void shutdown() {
-        System.out.println("[Ranking] " + getDatabaseManager().getSqlHandler().setTable("global").getAllFactions().size() + " factions have been unloaded!");
-        Bukkit.getScheduler().cancelTasks(launcher);
+        System.out.println("[Ranking] " + this.getDatabaseManager().getSqlHandler().setTable("global").getAllFactions().size() + " factions have been unloaded!");
+        Bukkit.getScheduler().cancelTasks(this.launcher);
     }
 
     private void sqlInitializer() {
-        database = settings.getDatabase();
-        username = settings.getUser();
-        password = settings.getPassword();
+        this.database = this.settings.getDatabase();
+        this.username = this.settings.getUser();
+        this.password = this.settings.getPassword();
         try {
             synchronized (this) {
-                if (getConnection() != null && !getConnection().isClosed()) return;
+                if (this.getConnection() != null && !this.getConnection().isClosed()) return;
                 Class.forName("com.mysql.jdbc.Driver");
-                String url = "jdbc:mysql://" + this.settings.getHost() + ":" + this.settings.getPort();
-                setConnection(DriverManager.getConnection(url + "?useUnicode=true&characterEncoding=utf8", this.username, this.password));
-                PreparedStatement db = getConnection().prepareStatement("CREATE DATABASE IF NOT EXISTS " + this.database);
-                db.execute();
-                setConnection(DriverManager.getConnection(url + "/" + this.database + "?useUnicode=true&characterEncoding=utf8", this.username, this.password));
-                String[] statements = {"CREATE TABLE IF NOT EXISTS `ranking_global` (`name` VARCHAR(36), `points` INTEGER, `rank` INTEGER, PRIMARY KEY (`name`))", "CREATE TABLE IF NOT EXISTS `ranking_pvp` (`name` VARCHAR(36), `points` INTEGER, `rank` INTEGER, PRIMARY KEY (`name`))", "CREATE TABLE IF NOT EXISTS `ranking_farm` (`name` VARCHAR(36), `points` INTEGER, `rank` INTEGER, PRIMARY KEY (`name`))"};
-                for (String statement : statements) getConnection().prepareStatement(statement).execute();
+                final String url = "jdbc:mysql://" + this.settings.getHost() + ":" + this.settings.getPort();
+                this.setConnection(DriverManager.getConnection(url + "?useUnicode=true&characterEncoding=utf8", this.username, this.password));
+                final PreparedStatement prepareStatement = this.getConnection().prepareStatement("CREATE DATABASE IF NOT EXISTS " + this.database);
+                prepareStatement.execute();
+                this.setConnection(DriverManager.getConnection(url + "/" + this.database + "?useUnicode=true&characterEncoding=utf8", this.username, this.password));
+                for (final String statement : Arrays.asList("CREATE TABLE IF NOT EXISTS `ranking_global` (`name` VARCHAR(36), `points` INTEGER, `rank` INTEGER, PRIMARY KEY (`name`))", "CREATE TABLE IF NOT EXISTS `ranking_pvp` (`name` VARCHAR(36), `points` INTEGER, `rank` INTEGER, PRIMARY KEY (`name`))", "CREATE TABLE IF NOT EXISTS `ranking_farm` (`name` VARCHAR(36), `points` INTEGER, `rank` INTEGER, PRIMARY KEY (`name`))")) {
+                    this.getConnection().prepareStatement(statement).execute();
+                }
             }
-        } catch (SQLException | ClassNotFoundException e) {
-            e.printStackTrace();
+        } catch (final SQLException | ClassNotFoundException exception) {
+            exception.printStackTrace();
         }
     }
 
-    private void createFiles(Logger logger, ClassLoader classLoader) {
-        FileManager config = FileManager.CONFIG;
-        FileManager lang = FileManager.LANG;
+    private void createFiles(final Logger logger, final ClassLoader classLoader) {
+        final FileManager config = FileManager.CONFIG;
+        final FileManager lang = FileManager.LANG;
         lang.create(logger);
         config.create(logger);
         try (final Reader reader = Files.newBufferedReader(config.getFile().toPath(), StandardCharsets.UTF_8)) {
-            Yaml yaml = new Yaml(new CustomClassLoaderConstructor(classLoader));
+            final Yaml yaml = new Yaml(new CustomClassLoaderConstructor(classLoader));
             yaml.setBeanAccess(BeanAccess.FIELD);
             this.settings = yaml.loadAs(reader, Settings.class);
-        } catch (IOException e) {
-            e.printStackTrace();
+        } catch (final IOException exception) {
+            exception.printStackTrace();
         }
-    }
-
-    public Connection getConnection() {
-        return connection;
-    }
-
-    public void setConnection(Connection connection) {
-        this.connection = connection;
-    }
-
-    public GuiManager getGuiManager() {
-        return this.guiManager;
-    }
-
-    public TaskManager getTaskManager() {
-        return this.taskManager;
-    }
-
-    public DatabaseManager getDatabaseManager() {
-        return databaseManager;
-    }
-
-    public Launcher getLauncher() {
-        return this.launcher;
-    }
-
-    public Settings getSettings() {
-        return this.settings;
     }
 }

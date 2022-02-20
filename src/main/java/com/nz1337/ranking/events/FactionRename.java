@@ -10,12 +10,12 @@ public class FactionRename implements Listener {
 
     private final DatabaseManager databaseManager;
 
-    public FactionRename(Ranking ranking) {
+    public FactionRename(final Ranking ranking) {
         this.databaseManager = ranking.getDatabaseManager();
     }
 
     @EventHandler
-    public void onFactionRename(FactionRenameEvent event) {
-        for (String table : new String[]{"pvp", "farm", "global"}) this.databaseManager.getSqlHandler().setTable(table).setName(event.getOldFactionTag(), event.getFactionTag());
+    public void onFactionRename(final FactionRenameEvent event) {
+        for (final String table : new String[]{"pvp", "farm", "global"}) this.databaseManager.getSqlHandler().setTable(table).setName(event.getOldFactionTag(), event.getFactionTag());
     }
 }

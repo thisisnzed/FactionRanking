@@ -5,7 +5,7 @@ import com.nz1337.ranking.placeholder.RankingExpansion;
 
 public class PlaceholderManager {
 
-    public PlaceholderManager(Ranking ranking) {
+    public PlaceholderManager(final Ranking ranking) {
         new RankingExpansion(ranking).register();
     }
 }

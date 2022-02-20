@@ -9,7 +9,7 @@ import org.bukkit.command.CommandSender;
 public class CommandHelp extends SubCommandManager {
 
     @Override
-    public void execute(Ranking ranking, CommandSender sender, String[] args) {
+    public void execute(final Ranking ranking, final CommandSender sender, final String[] args) {
         if (!sender.hasPermission(ranking.getSettings().getPermission())) {
             sender.sendMessage(Lang.COMMAND_NO_PERMISSION.get());
             return;

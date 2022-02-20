@@ -15,29 +15,30 @@ public class RankUpdater extends BukkitRunnable {
 
     private final Ranking ranking;
     private final SQLHandler sqlHandler;
-    private final HashMap<String, Integer> hmGlobal = new HashMap<>();
+    private final HashMap<String, Integer> hmGlobal;
 
-    public RankUpdater(Ranking ranking) {
+    public RankUpdater(final Ranking ranking) {
         this.ranking = ranking;
         this.sqlHandler = ranking.getDatabaseManager().getSqlHandler();
+        this.hmGlobal = new HashMap<>();
     }
 
     @Override
     public void run() {
-        for (String table : new String[]{"farm", "pvp"}) {
+        for (final String table : new String[]{"farm", "pvp"}) {
             final HashMap<String, Integer> sorter = new HashMap<>();
             this.sqlHandler.setTable(table).getAllFactions().forEach(faction -> sorter.put(faction, this.sqlHandler.setTable(table).getPoints(faction)));
-            List<String> sorted = new ArrayList<>(sorter.keySet());
+            final List<String> sorted = new ArrayList<>(sorter.keySet());
             sorted.sort((s1, s2) -> sorter.get(s2).compareTo(sorter.get(s1)));
             for (int i = 0; i < sorter.size(); i++) this.sqlHandler.setTable(table).setRank(sorted.get(i), (i + 1));
         }
-        this.sqlHandler.setTable("global").getAllFactions().forEach(faction -> hmGlobal.put(faction, this.sqlHandler.setTable("farm").getPoints(faction) + this.sqlHandler.setTable("pvp").getPoints(faction)));
-        List<String> sortedGlobal = new ArrayList<>(hmGlobal.keySet());
-        sortedGlobal.sort((s1, s2) -> hmGlobal.get(s2).compareTo(hmGlobal.get(s1)));
-        for (int i = 0; i < hmGlobal.size(); i++) {
+        this.sqlHandler.setTable("global").getAllFactions().forEach(faction -> this.hmGlobal.put(faction, this.sqlHandler.setTable("farm").getPoints(faction) + this.sqlHandler.setTable("pvp").getPoints(faction)));
+        final List<String> sortedGlobal = new ArrayList<>(this.hmGlobal.keySet());
+        sortedGlobal.sort((s1, s2) -> this.hmGlobal.get(s2).compareTo(this.hmGlobal.get(s1)));
+        for (int i = 0; i < this.hmGlobal.size(); i++) {
             this.sqlHandler.setTable("global").setRank(sortedGlobal.get(i), (i + 1));
-            this.sqlHandler.setTable("global").setPoints(sortedGlobal.get(i), hmGlobal.get(sortedGlobal.get(i)));
+            this.sqlHandler.setTable("global").setPoints(sortedGlobal.get(i), this.hmGlobal.get(sortedGlobal.get(i)));
         }
-        Lang.LEADERBOARD_UPDATED.getList().forEach(e -> Bukkit.broadcastMessage(ChatColor.translateAlternateColorCodes('&', e).replace("%timer%", String.valueOf(ranking.getSettings().getTimeUpdater()))));
+        Lang.LEADERBOARD_UPDATED.getList().forEach(e -> Bukkit.broadcastMessage(ChatColor.translateAlternateColorCodes('&', e).replace("%timer%", String.valueOf(this.ranking.getSettings().getTimeUpdater()))));
     }
 }

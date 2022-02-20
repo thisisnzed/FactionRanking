@@ -13,7 +13,7 @@ import org.bukkit.entity.Player;
 public class CommandRemove extends SubCommandManager {
 
     @Override
-    public void execute(Ranking ranking, CommandSender sender, String[] args) {
+    public void execute(final Ranking ranking, final CommandSender sender, final String[] args) {
         final Settings settings = ranking.getSettings();
         final String prefix = Lang.COMMAND_PREFIX.get();
         if (!sender.hasPermission(settings.getPermission())) {
@@ -24,30 +24,30 @@ public class CommandRemove extends SubCommandManager {
             sender.sendMessage(prefix + Lang.COMMAND_REMOVE_MISSING.get());
             return;
         }
-        String uncheckedAmount = args[3];
-        if (!isInteger(uncheckedAmount)) {
+        final String uncheckedAmount = args[3];
+        if (!this.isInteger(uncheckedAmount)) {
             sender.sendMessage(prefix + Lang.COMMAND_REMOVE_INVALID_VALUE.get().replace("%value%", uncheckedAmount));
             return;
         }
-        String type = args[1];
+        final String type = args[1];
         if (!type.equalsIgnoreCase("farm") && !type.equalsIgnoreCase("pvp")) {
             sender.sendMessage(prefix + Lang.COMMAND_REMOVE_INVALID_VALUE.get().replace("%type%", type));
             return;
         }
-        Player target = Bukkit.getPlayer(args[2]);
+        final Player target = Bukkit.getPlayer(args[2]);
         if (target == null) {
             sender.sendMessage(prefix + Lang.COMMAND_REMOVE_OFFLINE.get().replace("%player%", args[2]));
             return;
         }
-        FPlayer fPlayer = FPlayers.getInstance().getByPlayer(target);
+        final FPlayer fPlayer = FPlayers.getInstance().getByPlayer(target);
         if (!fPlayer.hasFaction()) {
             sender.sendMessage(prefix + Lang.COMMAND_REMOVE_WILDERNESS.get().replace("%player%", target.getName()));
             return;
         }
-        String faction = fPlayer.getFaction().getTag();
+        final String faction = fPlayer.getFaction().getTag();
         int amount = Integer.parseInt(uncheckedAmount);
         if (type.equalsIgnoreCase("farm") || type.equalsIgnoreCase("pvp")) {
-            String typeLower = type.toLowerCase();
+            final String typeLower = type.toLowerCase();
             ranking.getDatabaseManager().getSqlHandler().setTable(typeLower).removePoints(faction, amount);
             sender.sendMessage(prefix + Lang.COMMAND_REMOVE_SUCCESS.get().replace("%faction%", faction).replace("%type%", typeLower).replace("%value%", String.valueOf(amount)));
         }
@@ -68,10 +68,10 @@ public class CommandRemove extends SubCommandManager {
         return new String[0];
     }
 
-    private boolean isInteger(String s) {
+    private boolean isInteger(final String s) {
         try {
             Integer.parseInt(s);
-        } catch (NumberFormatException | NullPointerException e) {
+        } catch (final NumberFormatException | NullPointerException ignore) {
             return false;
         }
         return true;
