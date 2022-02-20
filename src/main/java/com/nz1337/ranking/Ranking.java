@@ -48,7 +48,7 @@ public class Ranking implements Launch {
     private Connection connection;
 
     @Override
-    public void launch(Launcher launcher, ClassLoader classLoader) {
+    public void launch(final Launcher launcher, final ClassLoader classLoader) {
         this.launcher = launcher;
         this.createFiles(launcher.getLogger(), classLoader);
         Bukkit.getScheduler().runTaskAsynchronously(launcher, () -> {

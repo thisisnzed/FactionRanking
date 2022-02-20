@@ -1,0 +1,9 @@
+main: com.nz1337.ranking.launcher.Launcher
+name: Ranking
+author: Najtt
+version: 1.0
+database: true
+depend: [Factions, Vault]
+commands:
+  classement:
+    aliases: [ranking, factionranking, ftop, franking, point, points]
