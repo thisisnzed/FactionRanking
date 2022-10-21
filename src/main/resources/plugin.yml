@@ -1,7 +1,7 @@
-main: com.nz1337.ranking.launcher.Launcher
+main: com.thisisnzed.factionranking.launcher.Launcher
 name: Ranking
 author: Najtt
-version: 1.0
+version: 1.1.0
 database: true
 depend: [Factions, Vault]
 commands:

@@ -13,7 +13,7 @@ You can reuse FactionRanking but make sure you comply with the [LICENSE](https:/
     <dependency>
         <groupId>com.factionranking</groupId>
         <artifactId>FactionRanking</artifactId>
-        <version>1.0.1</version>
+        <version>1.1.0</version>
     </dependency>
 </dependencies>
 ```
@@ -48,6 +48,6 @@ You can reuse FactionRanking but make sure you comply with the [LICENSE](https:/
 
 There are **three** rankings and for each there is **one** placeholder to display the position in the ranking of the faction of player.
 
-* **Ranking - Global** : %factionranking_globalrank%
-* **Ranking - Farm** : %factionranking_farmrank%
-* **Ranking - PvP** : %factionranking_pvprank%
+* **Ranking - Global** : %factionranking_rank_global%
+* **Ranking - Farm** : %factionranking_rank_farm%
+* **Ranking - PvP** : %factionranking_rank_pvp%
