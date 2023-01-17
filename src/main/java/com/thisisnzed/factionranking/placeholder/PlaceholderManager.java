@@ -1,11 +1,17 @@
 package com.thisisnzed.factionranking.placeholder;
 
-import com.thisisnzed.factionranking.Ranking;
 import com.thisisnzed.factionranking.placeholder.impl.RankingExpansion;
+import com.thisisnzed.factionranking.sql.DatabaseManager;
 
 public class PlaceholderManager {
 
-    public PlaceholderManager(final Ranking ranking) {
-        new RankingExpansion(ranking).register();
+    private final RankingExpansion rankingExpansion;
+
+    public PlaceholderManager(final DatabaseManager databaseManager) {
+        this.rankingExpansion = new RankingExpansion(databaseManager);
+    }
+
+    public void register() {
+        this.rankingExpansion.register();
     }
 }

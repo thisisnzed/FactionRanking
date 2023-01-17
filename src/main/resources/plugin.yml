@@ -1,9 +1,8 @@
-main: com.thisisnzed.factionranking.launcher.Launcher
-name: Ranking
-author: Najtt
-version: 1.1.0
-database: true
-depend: [Factions, Vault]
+main: com.thisisnzed.factionranking.plugin.Launcher
+name: FactionRanking
+version: 2.0.0
+api-version:  1.8
+author: thisisnzed
 commands:
-  classement:
-    aliases: [ranking, factionranking, ftop, franking, point, points]
+  factionranking:
+    aliases: [franking, ranking, point, points]

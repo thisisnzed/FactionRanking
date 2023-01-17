@@ -2,19 +2,18 @@ package com.thisisnzed.factionranking.placeholder.impl;
 
 import com.massivecraft.factions.FPlayer;
 import com.massivecraft.factions.FPlayers;
-import com.thisisnzed.factionranking.Ranking;
-import com.thisisnzed.factionranking.storage.DatabaseManager;
-import com.thisisnzed.factionranking.storage.impl.SQLHandler;
+import com.thisisnzed.factionranking.sql.DatabaseManager;
+import com.thisisnzed.factionranking.sql.impl.RankingHandler;
 import me.clip.placeholderapi.expansion.PlaceholderExpansion;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
 public class RankingExpansion extends PlaceholderExpansion {
 
-    private final Ranking ranking;
+    private final DatabaseManager databaseManager;
 
-    public RankingExpansion(Ranking ranking) {
-        this.ranking = ranking;
+    public RankingExpansion(final DatabaseManager databaseManager) {
+        this.databaseManager = databaseManager;
     }
 
     @Override
@@ -24,7 +23,7 @@ public class RankingExpansion extends PlaceholderExpansion {
 
     @Override
     public @NotNull String getAuthor() {
-        return "Najtt";
+        return "thisisnzed";
     }
 
     @Override
@@ -34,7 +33,7 @@ public class RankingExpansion extends PlaceholderExpansion {
 
     @Override
     public @NotNull String getVersion() {
-        return "1.0";
+        return "2.0.0";
     }
 
     @Override
@@ -42,15 +41,18 @@ public class RankingExpansion extends PlaceholderExpansion {
         final FPlayer fPlayer = FPlayers.getInstance().getByPlayer(player);
         if (player == null || fPlayer == null || !fPlayer.hasFaction()) return "?";
         final String tag = fPlayer.getFaction().getTag();
-        final DatabaseManager databaseManager = this.ranking.getDatabaseManager();
-        final SQLHandler sqlHandler = databaseManager.getSqlHandler();
-        switch (identifier) {
-            case "rank_global":
-                return sqlHandler.getRank(tag, "ranking_global") > 0 ? String.valueOf(sqlHandler.getRank(tag, "ranking_global")) : "?";
-            case "rank_pvp":
-                return sqlHandler.getRank(tag, "ranking_pvp") > 0 ? String.valueOf(sqlHandler.getRank(tag, "ranking_pvp")) : "?";
-            case "rank_farm":
-                return sqlHandler.getRank(tag, "ranking_farm") > 0 ? String.valueOf(sqlHandler.getRank(tag, "ranking_farm")) : "?";
+        final RankingHandler rankingHandler = this.databaseManager.getRankingHandler();
+        try {
+            switch (identifier) {
+                case "pos":
+                    final int rank = rankingHandler.getRank(tag).get();
+                    return rank > 0 ? String.valueOf(rank) : "?";
+                case "points":
+                    final int points = rankingHandler.getPoints(tag).get();
+                    return points > 0 ? String.valueOf(points) : "?";
+            }
+        } catch (final Exception exception) {
+            exception.printStackTrace();
         }
         return "?";
     }

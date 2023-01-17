@@ -10,8 +10,5 @@
         <module name="FactionRanking" />
       </profile>
     </annotationProcessing>
-    <bytecodeTargetLevel>
-      <module name="FactionRanking" target="8" />
-    </bytecodeTargetLevel>
   </component>
 </project>

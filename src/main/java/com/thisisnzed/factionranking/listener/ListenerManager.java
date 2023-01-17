@@ -1,28 +1,19 @@
 package com.thisisnzed.factionranking.listener;
 
-import com.thisisnzed.factionranking.Ranking;
-import com.thisisnzed.factionranking.listener.impl.FactionCreate;
-import com.thisisnzed.factionranking.listener.impl.FactionDisband;
-import com.thisisnzed.factionranking.listener.impl.FactionRename;
-import com.thisisnzed.factionranking.listener.impl.InventoryClick;
-import com.thisisnzed.factionranking.launcher.Launcher;
+import com.thisisnzed.factionranking.plugin.Launcher;
 import org.bukkit.event.Listener;
+
+import java.util.Arrays;
 
 public class ListenerManager {
 
-    private final Ranking ranking;
+    private final Launcher launcher;
 
-    public ListenerManager(final Ranking ranking) {
-        this.ranking = ranking;
+    public ListenerManager(final Launcher launcher) {
+        this.launcher = launcher;
     }
 
-    public void registerListeners() {
-        this.addListener(new InventoryClick(this.ranking), new FactionCreate(this.ranking), new FactionRename(this.ranking), new FactionDisband(this.ranking));
-    }
-
-    private void addListener(final Listener... listeners) {
-        final Launcher launcher = this.ranking.getLauncher();
-        for (final Listener listener : listeners)
-            launcher.getServer().getPluginManager().registerEvents(listener, launcher);
+    public void addListeners(final Listener... listeners) {
+        Arrays.stream(listeners).forEach(listener -> this.launcher.getServer().getPluginManager().registerEvents(listener, this.launcher));
     }
 }
