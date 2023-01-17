@@ -1,8 +1,0 @@
-main: com.thisisnzed.factionranking.plugin.Launcher
-name: FactionRanking
-version: 2.0.0
-api-version:  1.8
-author: thisisnzed
-commands:
-  factionranking:
-    aliases: [franking, ranking, point, points]
