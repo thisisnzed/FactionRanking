@@ -22,7 +22,7 @@ public class RankingHandler {
     public boolean isExists(final String tag) {
         final Connection connection = this.databaseManager.getConnection();
         try {
-            final PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM `ranking` WHERE `name`=?");
+            final PreparedStatement preparedStatement = connection.prepareStatement("SELECT `name` FROM `ranking` WHERE `name`=?");
             preparedStatement.setString(1, tag);
             if (preparedStatement.executeQuery().next()) return true;
         } catch (final SQLException exception) {
@@ -34,7 +34,7 @@ public class RankingHandler {
     public void register(final String tag) {
         final Connection connection = this.databaseManager.getConnection();
         try {
-            final PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM `ranking` WHERE `name`=?");
+            final PreparedStatement preparedStatement = connection.prepareStatement("SELECT `name` FROM `ranking` WHERE `name`=?");
             preparedStatement.setString(1, tag);
             preparedStatement.executeQuery().next();
             if (!this.isExists(tag)) {
@@ -108,7 +108,7 @@ public class RankingHandler {
         return CompletableFuture.supplyAsync(() -> {
             final Connection connection = this.databaseManager.getConnection();
             try {
-                final PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM `ranking` WHERE `name`=?");
+                final PreparedStatement preparedStatement = connection.prepareStatement("SELECT `rank` FROM `ranking` WHERE `name`=?");
                 preparedStatement.setString(1, tag);
                 final ResultSet results = preparedStatement.executeQuery();
                 results.next();
@@ -124,7 +124,7 @@ public class RankingHandler {
         return CompletableFuture.supplyAsync(() -> {
             final Connection connection = this.databaseManager.getConnection();
             try {
-                final PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM `ranking` WHERE `name`=?");
+                final PreparedStatement preparedStatement = connection.prepareStatement("SELECT `points` FROM `ranking` WHERE `name`=?");
                 preparedStatement.setString(1, tag);
                 final ResultSet results = preparedStatement.executeQuery();
                 if (results.next()) return results.getInt("points");
@@ -150,7 +150,7 @@ public class RankingHandler {
     public String getFactionAt(final int rank) {
         final Connection connection = this.databaseManager.getConnection();
         try {
-            final PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM `ranking` WHERE `rank`=?");
+            final PreparedStatement preparedStatement = connection.prepareStatement("SELECT `name` FROM `ranking` WHERE `rank`=?");
             preparedStatement.setInt(1, rank);
             final ResultSet results = preparedStatement.executeQuery();
             if (results.next()) return results.getString("name");
@@ -164,7 +164,7 @@ public class RankingHandler {
         final Connection connection = this.databaseManager.getConnection();
         final ArrayList<String> factions = new ArrayList<>();
         try {
-            final PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM `ranking` ORDER BY `points` DESC LIMIT ?");
+            final PreparedStatement preparedStatement = connection.prepareStatement("SELECT `name` FROM `ranking` ORDER BY `points` DESC LIMIT ?");
             preparedStatement.setInt(1, limit);
             final ResultSet results = preparedStatement.executeQuery();
             while (results.next()) factions.add(results.getString("name"));

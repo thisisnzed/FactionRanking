@@ -38,68 +38,70 @@ public class CommandRanking extends Command {
                         super.commandSender.sendMessage("§6§lFaction Ranking §7- §fTop 10");
                         for (final String faction : rankingHandler.getAllFactions(10))
                             super.commandSender.sendMessage("§7" + rankingHandler.getRank(faction).get() + ". §f" + faction + " §7- §f" + rankingHandler.getPoints(faction).get() + " points");
-                        return;
+                        break;
                     }
                     case "reload": {
                         if (this.hasPermission("factionranking.reload")) {
                             FileManager.CONFIG.reload();
                             this.commandSender.sendMessage("§aThe config has been reloaded");
                         }
-                        return;
+                        break;
                     }
                     case "add": {
                         if (this.hasPermission("factionranking.add")) {
                             if (super.args.length != 3) {
                                 super.commandSender.sendMessage("§cUsage: /factionranking add <player> <points>");
-                                return;
+                                break;
                             }
                             final String uncheckedAmount = super.args[2];
                             if (!NumberUtils.isInteger(uncheckedAmount)) {
                                 super.commandSender.sendMessage("§cThe amount must be a number");
-                                return;
+                                break;
                             }
                             final Player target = Bukkit.getPlayer(super.args[1]);
                             if (target == null) {
                                 super.commandSender.sendMessage("§cThe player is not online");
-                                return;
+                                break;
                             }
                             final FPlayer fPlayer = FPlayers.getInstance().getByPlayer(target);
                             if (!fPlayer.hasFaction()) {
                                 super.commandSender.sendMessage("§cThe player is not in a faction");
-                                return;
+                                break;
                             }
                             final String faction = fPlayer.getFaction().getTag();
                             final int amount = Integer.parseInt(uncheckedAmount);
                             this.databaseManager.getRankingHandler().addPoints(faction, amount);
                             super.commandSender.sendMessage("§aThe faction §e" + faction + " §ahas been added §e" + amount + " §apoints");
-                        } else return;
+                        }
+                        break;
                     }
                     case "remove": {
                         if (this.hasPermission("factionranking.remove")) {
                             if (super.args.length != 3) {
                                 super.commandSender.sendMessage("§cUsage: /factionranking remove <player> <points>");
-                                return;
+                                break;
                             }
                             final String uncheckedAmount = super.args[2];
                             if (!NumberUtils.isInteger(uncheckedAmount)) {
                                 super.commandSender.sendMessage("§cThe amount must be a number");
-                                return;
+                                break;
                             }
                             final Player target = Bukkit.getPlayer(super.args[1]);
                             if (target == null) {
                                 super.commandSender.sendMessage("§cThe player is not online");
-                                return;
+                                break;
                             }
                             final FPlayer fPlayer = FPlayers.getInstance().getByPlayer(target);
                             if (!fPlayer.hasFaction()) {
                                 super.commandSender.sendMessage("§cThe player is not in a faction");
-                                return;
+                                break;
                             }
                             final String faction = fPlayer.getFaction().getTag();
                             final int amount = Integer.parseInt(uncheckedAmount);
                             this.databaseManager.getRankingHandler().removePoints(faction, amount);
                             super.commandSender.sendMessage("§aThe faction §e" + faction + " §ahas been removed §e" + amount + " §apoints");
-                        } else return;
+                        }
+                        break;
                     }
                     default: {
                         this.sendHelp();
